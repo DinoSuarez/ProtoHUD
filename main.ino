@@ -18,6 +18,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define DHTPIN 2 
 #define DHTTYPE DHT11
 
+int mover = 0; //This is just an indicator for each time the loop function starts
+
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
@@ -30,7 +32,9 @@ void setup() {
     for(;;); // Don't proceed, loop forever
   }
 
-  display.display();
+  display.display(); // This displays the Adafruit logo. The example code takes the time
+                     // to draw it with a bitmap, but it's apparently not even necessary.
+                     
   delay(2000); // Pause for 2 seconds
 
   // Clear the buffer and set text types. This is required before printing text
@@ -52,6 +56,10 @@ void loop() {
 
   delay(2000);
 
+  if (mover > 1){
+    mover = 0;
+  }
+
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(WHITE);
@@ -59,11 +67,11 @@ void loop() {
 
   // Reading temperature or humidity takes about 250 milliseconds!
   // Sensor readings may also be up to 2 seconds 'old' (it's a very slow sensor)
-  float h = dht.readHumidity();
+  int h = dht.readHumidity();
   // Read temperature as Celsius
   float t = dht.readTemperature();
   // Read temperature as Fahrenheit (isFahrenheit = true)
-  float f = dht.readTemperature(true);
+  int f = dht.readTemperature(true);
 
   // Check if any reads failed and wait for input
   if (isnan(h) || isnan(t) || isnan(f)) {
@@ -72,11 +80,21 @@ void loop() {
     return;
   }
 
-  display.println("Temperature: ");
-  display.println(f);
-  display.println("Humidity: ");
-  display.println(h);
+  if (mover == 0){ // This if-else loop just shows when the loop starts over
+    display.println("(-)"); //
+      }
+  else {
+    display.println("(|)");
+  }
+  
+  display.print("Temperature:  ");
+  display.print(f);
+  display.println(" F");
+  display.print("Humidity:     ");
+  display.print(h);
+  display.println("%");
   
   display.display();
-  
+
+  mover++;
 }
