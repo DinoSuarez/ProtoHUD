@@ -15,7 +15,7 @@
 #define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET); 
 
-#define DHTPIN 2 
+#define DHTPIN 33 
 #define DHTTYPE DHT11
 
 int mover = 0; //This is just an indicator for each time the loop function starts
