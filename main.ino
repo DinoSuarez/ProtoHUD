@@ -1,11 +1,13 @@
-// Eric D. Schubert, 4/16/2021
-// This is a mashup of mostly example code for the Adafruit SSD1306 display and the DHT sensors.
-// Currently, this only displays temperature and humidity on a 128x64 SSD1306 display, but more data will be added.
+// DinoSuarez, 4/16/2021
+// This is a mashup of mostly example code for the Adafruit SSD1306 display and the DHT sensors, and
+// ESP_Simple_Clock_Functions by G6EJD on GitHub.
 // WORK IN PROGRESS, don't expect much.
 
 #include "DHT.h"
 #include <SPI.h>
 #include <Wire.h>
+#include <WiFi.h>
+#include <time.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
@@ -15,14 +17,18 @@
 #define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET); 
 
-#define DHTPIN 33 
+#define DHTPIN 19 
 #define DHTTYPE DHT11
 
-int mover = 0; //This is just an indicator for each time the loop function starts
+int mover = 0; //This is just a visual indicator for each time the loop function starts
 
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
+
+  WiFi.begin("YourSSID","YourPassword"); //initialize Wifi connection
+  configTime(0,0, "pool.ntp.org", "time.nist.gov");
+  setenv("TZ", "PST8PDT", 1); //Change the middle value to the appropriate timezone code
   
   dht.begin(); //If you remove this, temperature and humidity are way off
 
@@ -80,13 +86,15 @@ void loop() {
     return;
   }
 
-  if (mover == 0){ // This if-else loop just shows when the loop starts over
-    display.println("(-)"); //
+  if (mover == 0){ // This if-else loop just spins the indicator when the loop starts over
+    display.print("(-) "); //
       }
   else {
-    display.println("(|)");
+    display.print("(|) ");
   }
-  
+
+  display.println(get_time());
+  display.println();
   display.print("Temperature:  ");
   display.print(f);
   display.println(" F");
@@ -98,3 +106,15 @@ void loop() {
 
   mover++;
 }
+
+String get_time(){ 
+
+time_t now;
+  time(&now);
+  char time_output[30];
+  // See http://www.cplusplus.com/reference/ctime/strftime/ for strftime functions
+  strftime(time_output, 30, "%r", localtime(&now));                  //add or remove variables in quotation marks to change what gets displayed
+  return String(time_output);
+
+}
+
