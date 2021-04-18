@@ -2,6 +2,9 @@
 
 Arduino-based heads-up display for protogens
 
+----// DISCLAIMER //----
+
+I am not claiming original ownership of any of this code. All references to outside sources are cited in the comments of the main file.
 
 ----// Description //----
 
