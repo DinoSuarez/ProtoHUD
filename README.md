@@ -15,11 +15,4 @@ the time-query function.
 
 ----// TODO //----
 
-* configTime should be able to poll time from an NTP server
-
-//configTime(timezone * 3600, dst * 0, "pool.ntp.org","time.nist.gov");
-//time_t now = time(nullptr);
-//display.println(ctime(&now));
-
-
 * figure out which method to use for internet connection. Connect ESP32 to phone hotspot, bluetooth, or be extra and give it a SIM card?
