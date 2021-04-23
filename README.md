@@ -12,7 +12,3 @@ Basically, this is a piece of code for a heads-up display, to be used in a proto
 about the environment that is visible from inside the helmet, such as temperature/ humidity, and the current time.
 This code should be fairly lightweight and modular, but will likely end up being ESP-specific for however I implement
 the time-query function.
-
-----// TODO //----
-
-* figure out which method to use for internet connection. Connect ESP32 to phone hotspot, bluetooth, or be extra and give it a SIM card?
